@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { users_json } from './user_data'
 import User from './User';
-import Pagination from './Pagination';
-import { orderBy } from 'lodash'
+import { filter, orderBy, take } from 'lodash'
+import Table from '../common/table/Table';
 
 
 class Users extends Component {
@@ -75,40 +75,47 @@ class Users extends Component {
     this.setState(cpState);
   }
   render() {
-    const { users, onDelete, onAddTicket, onLiked } = this.props;
-    const { pageSize, selectedPage, selectedBloodGroup, sortColumnName, sortOrder, columns } = this.state;
+    console.log(this.props)
+    const { history } = this.props;
+    // debugger;
+    // const { users, onDelete, onAddTicket, onLiked, pageSize, selectedPage, selectedBloodGroup, sortColumnName, sortOrder, columns } = this.props;
+    // // const {  } = this.state;
 
-    
+    // let bloodGroupCategories = Array.from(new Set(users.map(user => user.bloodGroup)));
 
-    let filteredUsers = [];
-    if(selectedBloodGroup.length) {
-      filteredUsers = users.filter(user => user.bloodGroup === selectedBloodGroup);
-    } else {
-      filteredUsers = users;
-    }
+    // let tableData = {
+    //   columns: columns,
+    //   sortable: true,
+    //   sort: {
+    //     sortColumnName: sortColumnName,
+    //     sortOrder: sortOrder,
+    //   },
+    //   paginated: true,
+    //   pagination: {
+    //     pageSize: pageSize,
+    //     selectedPage, selectedPage
+    //   },
+    //   filterValue: selectedBloodGroup,
+    //   handlePageChange: this.handlePageChange,
+    //   data: users,
+    //   actions: [
+    //     {
+    //       label:"Delete",
+    //       class: "btn btn-danger",
+    //       actionHandler: () => {console.log("delete din actiuni dynamice")}
+    //     },
+    //     {
+    //       label: "Add To Cart",
+    //       class: "btn btn-success",
+    //       actionHandler: () => {console.log("edit fro mcustom ")}
+    //     }
+    //   ]
+    // };
 
-    filteredUsers = orderBy(filteredUsers, [sortColumnName], [sortOrder]);
-
-    const numberOfPages = filteredUsers.length / pageSize;
-    // users - 30 elemente
-    // pageSize - 5 elemente
-    // selectedPage - 4 Pagina
-    var pagedUsers = [];
-    var entryPoint = pageSize * (selectedPage - 1);
-    if (filteredUsers.length) {
-
-      for (let i = entryPoint; i < entryPoint + pageSize; i++) {
-        if (filteredUsers[i]) {
-          pagedUsers.push(filteredUsers[i]);
-        }
-      }
-    }
-
-    let bloodGroupCategories = Array.from(new Set(users.map(user => user.bloodGroup)));
-
+    // debugger
     return (
       <div style={{display: "flex"}} className="mt-4">
-        <div className='m-4' style={{width: 100}}>
+        {/* <div className='m-4' style={{width: 100}}>
           <div>
             <ul class="list-group">
               {bloodGroupCategories.map(bloodGroup => (
@@ -116,39 +123,10 @@ class Users extends Component {
               ))}
             </ul>
           </div>
-        </div>
+        </div> */}
         <div>
-        <table class="table">
-          <thead>
-            <tr>
-              {columns.map(column => (<th onClick={() => column.sortable && this.handleTableSort(column.key)} scope="col">
-                {column.label}
-                {column.sortable && sortColumnName === column.key && <i class={ sortOrder === "asc" ? "fa-solid fa-arrow-up mx-2":"fa-solid fa-arrow-down mx-2"}></i>}
-              </th>))}
-            </tr>
-          </thead>
-          <tbody>
-            {pagedUsers.map(user => {
-              return (<tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.bloodGroup}</td>
-                <td>{user.email}</td>
-                <td>{user.nrBilete}</td>
-                <td>{user.nrLikes}</td>
-                <td>
-                  <button onClick={() => onLiked(user)} className={this.computeLiked(user)}>Like</button>
-                  <button onClick={() => onAddTicket(user)} className='btn btn-secondary'>Adauga Bilet</button>
-                  <button onClick={() => onDelete(user)} className='btn btn-danger'>Sterge</button>
-                </td>
-              </tr>)
-            })}
-          </tbody>
-        </table>
-        <Pagination
-          selectedPage={this.state.selectedPage}
-          nrOfPages={numberOfPages}
-          onChangePage={this.handlePageChange}
-        ></Pagination>
+          USERS PAGE
+        {/* <Table tableData={tableData} users={users} onLiked={onLiked} onAddTicket={onAddTicket} onDelete={onDelete}></Table> */}
         </div>
       </div>
     )

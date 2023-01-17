@@ -4,6 +4,10 @@ import Users from './user/Users';
 import Navbar from './common/Navbar';
 import React from 'react';
 import { users_json } from './user/user_data';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Sport from './sports/Sport';
+import UserDetails from './user/user-details/UserDetails';
+import NotFound from './common/not-found/NotFound';
 
 class App extends React.Component {
   state = { 
@@ -78,7 +82,14 @@ class App extends React.Component {
    return (
     <div className="App">
       <Navbar users={users}></Navbar>
-      <Users users={users} onDelete={this.handleDelete} onAddTicket={this.handleAddTicket} onLiked={this.handleUserLike}></Users>
+      <Routes>
+        <Route path='users' element={<Users />}></Route>
+        <Route path='users/:numaruUtilizator' element={<UserDetails />}></Route>
+        <Route path='sports' element={<Sport />}></Route>
+        <Route path='not-found' element={<NotFound />}></Route>
+        <Route path='*' element={<Navigate to="not-found" replace={true} />} />
+      </Routes>
+      {/* <Users users={users} onDelete={this.handleDelete} onAddTicket={this.handleAddTicket} onLiked={this.handleUserLike}></Users> */}
     </div>
   );
    }
